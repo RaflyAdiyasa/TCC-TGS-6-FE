@@ -11,7 +11,7 @@ const AddUser = () => {
   const saveUser = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:5000/users", {
+      await axios.post("https://be-722144796089.us-central1.run.app/users", {
         tag,
         title,
         content,

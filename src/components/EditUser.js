@@ -16,7 +16,7 @@ const EditUser = () => {
   const updateUser = async (e) => {
     e.preventDefault();
     try {
-      await axios.patch(`http://localhost:5000/users/${id}`, {
+      await axios.patch(`https://be-722144796089.us-central1.run.app/users/${id}`, {
         tag,
         title,
         content,
@@ -28,7 +28,7 @@ const EditUser = () => {
   };
 
   const getUserById = async () => {
-    const response = await axios.get(`http://localhost:5000/users/${id}`);
+    const response = await axios.get(`https://be-722144796089.us-central1.run.app/users/${id}`);
     setTag(response.data.tag);
     setTitle(response.data.title);
     setContent(response.data.content);
