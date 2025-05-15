@@ -7,14 +7,16 @@ import "./style.css";
 const NoteList = () => {
   const [users, setUser] = useState([]);
 
-  useEffect(() => {
-    getUsers();
-  }, []);
+ 
 
   const getUsers = async () => {
     const response = await axios.get("http://localhost:5000/users");
     setUser(response.data);
   };
+
+  useEffect(() => {
+    getUsers();
+  }, []);
 
   const deleteUser = async (id) => {
     try {

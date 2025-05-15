@@ -9,9 +9,7 @@ const EditNote = () => {
   const navigate = useNavigate();
   const { id } = useParams();
 
-  useEffect(() => {
-    getUserById();
-  }, []);
+
 
   const updateUser = async (e) => {
     e.preventDefault();
@@ -27,6 +25,8 @@ const EditNote = () => {
     }
   };
 
+  
+
   const getUserById = async () => {
     const response = await axios.get(`http://localhost:5000/${id}`);
     setTag(response.data.tag);
@@ -34,6 +34,10 @@ const EditNote = () => {
     setContent(response.data.content);
   };
 
+  useEffect(() => {
+    getUserById();
+  }, []);
+  
   return (
     <div className="form-container">
       <h2 className="form-title">Edit Data</h2>
