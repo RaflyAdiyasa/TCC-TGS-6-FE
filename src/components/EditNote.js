@@ -1,17 +1,22 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
-const AddUser = () => {
+const EditNote = () => {
   const [tag, setTag] = useState("");
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const navigate = useNavigate();
+  const { id } = useParams();
 
-  const saveUser = async (e) => {
+  useEffect(() => {
+    getUserById();
+  }, []);
+
+  const updateUser = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("https://be-722144796089.us-central1.run.app/users", {
+      await axios.patch(`http://localhost:5000/users/${id}`, {
         tag,
         title,
         content,
@@ -22,11 +27,17 @@ const AddUser = () => {
     }
   };
 
+  const getUserById = async () => {
+    const response = await axios.get(`http://localhost:5000/${id}`);
+    setTag(response.data.tag);
+    setTitle(response.data.title);
+    setContent(response.data.content);
+  };
+
   return (
     <div className="form-container">
-      <h2 className="form-title">Tambah Data</h2>
-      <form onSubmit={saveUser} className="form-card">
-        {/* Input Tag */}
+      <h2 className="form-title">Edit Data</h2>
+      <form onSubmit={updateUser} className="form-card">
         <div className="form-group">
           <label className="label">Tag</label>
           <input
@@ -38,7 +49,6 @@ const AddUser = () => {
           />
         </div>
 
-        {/* Input Title */}
         <div className="form-group">
           <label className="label">Title</label>
           <input
@@ -47,25 +57,25 @@ const AddUser = () => {
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             placeholder="Masukkan Title"
-            rows="6"
           />
         </div>
 
-        {/* Input Content (Textarea) */}
+        
         <div className="form-group">
           <label className="label">Content</label>
           <textarea
-            className="input content-textarea"
+            className="input content-textarea "
             value={content}
             onChange={(e) => setContent(e.target.value)}
             placeholder="Masukkan Konten"
+            rows="6"
+            
           />
         </div>
 
-        {/* Tombol Aksi */}
         <div className="form-actions">
           <button type="submit" className="button is-primary">
-            Simpan
+            Perbarui
           </button>
         </div>
       </form>
@@ -73,4 +83,4 @@ const AddUser = () => {
   );
 };
 
-export default AddUser;
+export default EditNote;

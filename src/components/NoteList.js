@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import "./style.css";
 
 
-const UserList = () => {
+const NoteList = () => {
   const [users, setUser] = useState([]);
 
   useEffect(() => {
@@ -12,13 +12,13 @@ const UserList = () => {
   }, []);
 
   const getUsers = async () => {
-    const response = await axios.get("https://be-722144796089.us-central1.run.app/users");
+    const response = await axios.get("http://localhost:5000/users");
     setUser(response.data);
   };
 
   const deleteUser = async (id) => {
     try {
-      await axios.delete(`https://be-722144796089.us-central1.run.app/users/${id}`);
+      await axios.delete(`http://localhost:5000/users/${id}`);
       getUsers();
     } catch (error) {
       console.log(error);
@@ -72,4 +72,4 @@ const UserList = () => {
   );
 };
 
-export default UserList;
+export default NoteList;
