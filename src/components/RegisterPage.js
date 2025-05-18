@@ -7,6 +7,7 @@ const RegisterPage = () => {
   const [nama, setNama] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [gender, setGender] = useState("");
 
   return (
     <div className="auth-container">
@@ -21,6 +22,17 @@ const RegisterPage = () => {
             value={nama}
             placeholder="Masukkan nama"
             onChange={(e) => setNama(e.target.value)}
+          />
+        </div>
+
+        <div className="auth-group">
+          <label className="auth-label">Gender</label>
+          <input
+            className="auth-input"
+            type="text"
+            value={gender}
+            placeholder="Masukkan gender"
+            onChange={(e) => setGender(e.target.value)}
           />
         </div>
 
