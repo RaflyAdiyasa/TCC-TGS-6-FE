@@ -170,3 +170,62 @@
 .button.is-primary:hover {
   background-color: #5ca8d6;
 }
+
+
+.auth-container {
+  max-width: 400px;
+  margin: 60px auto;
+  padding: 20px;
+}
+
+.auth-card {
+  background: #fff;
+  border-radius: 10px;
+  padding: 25px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.auth-title {
+  text-align: center;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.auth-group {
+  margin-bottom: 15px;
+}
+
+.auth-label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.auth-input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+.auth-button {
+  width: 100%;
+  padding: 12px;
+  background-color: #87ceeb;
+  color: white;
+  font-size: 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.auth-button:hover {
+  background-color: #5cbbe0;
+}
+
+.auth-footer {
+  margin-top: 15px;
+  text-align: center;
+}
