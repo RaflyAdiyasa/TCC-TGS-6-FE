@@ -1,14 +1,36 @@
 // src/pages/LoginPage.js
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import "./style.css"; 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+
+  const navigate = useNavigate();
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await axios.post("http://localhost:5000/login", {
+        email,
+        password,
+      });
+
+      // Simpan token ke localStorage
+      localStorage.setItem("token", res.data.token);
+      navigate("/"); // Arahkan ke halaman utama
+    } catch (err) {
+      setError("Login gagal. Cek email atau password.");
+    }
+  };
+
 
   return (
     <div className="auth-container">
-      <form className="auth-card">
+      <form className="auth-card" onSubmit={handleLogin} >
         <h2 className="auth-title">Login</h2>
 
         <div className="auth-group">
@@ -33,7 +55,12 @@ const LoginPage = () => {
           />
         </div>
 
-        <button className="auth-button">Masuk</button>
+       
+        {error && <p style={{ color: "red" }}>{error}</p>}
+
+        <div className="form-actions">
+          <button type="submit" className="button is-primary">Login</button>
+        </div>
 
         <p className="auth-footer">
           Belum punya akun? <Link to="/register">Daftar</Link>
