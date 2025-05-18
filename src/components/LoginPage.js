@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import "./style.css"; 
+import "../style.css"; 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -12,19 +12,21 @@ const LoginPage = () => {
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
-    e.preventDefault();
-    try {
-      const res = await axios.post("http://localhost:5000/login", {
-        email,
-        password,
-      });
-
-      // Simpan token ke localStorage
-      localStorage.setItem("token", res.data.token);
-      navigate("/"); // Arahkan ke halaman utama
-    } catch (err) {
-      setError("Login gagal. Cek email atau password.");
-    }
+      e.preventDefault();
+      try {
+        const res = await axios.post("http://localhost:5000/login", {
+          email,
+          password,
+        }, {
+          withCredentials: true
+        });
+    
+        // Simpan token ke localStorage
+        localStorage.setItem("token", res.data.accessToken);
+        navigate("/"); // Arahkan ke halaman utama
+      } catch (err) {
+        setError("Login gagal. Cek email atau password.");
+      }
   };
 
 

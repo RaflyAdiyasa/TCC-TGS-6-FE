@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import axios from "axios";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { BASE_URL } from "../utils";
+import api from "../utils/api";
+import { logout } from "../utils/auth";
 
 const AddNote = () => {
   const [tag, setTag] = useState("");
@@ -9,25 +9,34 @@ const AddNote = () => {
   const [content, setContent] = useState("");
   const navigate = useNavigate();
 
-  const saveUser = async (e) => {
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      navigate("/login");
+    }
+  }, [navigate]);
+
+  const saveNote = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(`${BASE_URL}/note`, {
+      await api.post("/note", {
         tag,
         title,
         content,
       });
       navigate("/");
     } catch (error) {
-      console.log(error);
+      console.error("Error creating note:", error);
+      if (error.response && error.response.status === 401) {
+        logout();
+      }
     }
   };
 
   return (
     <div className="form-container">
       <h2 className="form-title">Tambah Data</h2>
-      <form onSubmit={saveUser} className="form-card">
-        {/* Input Tag */}
+      <form onSubmit={saveNote} className="form-card">
         <div className="form-group">
           <label className="label">Tag</label>
           <input
@@ -36,10 +45,10 @@ const AddNote = () => {
             value={tag}
             onChange={(e) => setTag(e.target.value)}
             placeholder="Masukkan Tag"
+            required
           />
         </div>
 
-        {/* Input Title */}
         <div className="form-group">
           <label className="label">Title</label>
           <input
@@ -48,11 +57,10 @@ const AddNote = () => {
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             placeholder="Masukkan Title"
-            rows="6"
+            required
           />
         </div>
 
-        {/* Input Content (Textarea) */}
         <div className="form-group">
           <label className="label">Content</label>
           <textarea
@@ -60,13 +68,20 @@ const AddNote = () => {
             value={content}
             onChange={(e) => setContent(e.target.value)}
             placeholder="Masukkan Konten"
+            required
           />
         </div>
 
-        {/* Tombol Aksi */}
         <div className="form-actions">
           <button type="submit" className="button is-primary">
             Simpan
+          </button>
+          <button
+            type="button"
+            className="button is-danger"
+            onClick={() => navigate("/")}
+          >
+            Batal
           </button>
         </div>
       </form>

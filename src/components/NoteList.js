@@ -1,74 +1,107 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
-import { Link } from "react-router-dom";
-import "./style.css";
-import { BASE_URL } from "../utils";
+import { Link, useNavigate } from "react-router-dom";
+import api from "../utils/api";
+import "../style.css";
+import { logout } from "../utils/auth";
 
 const NoteList = () => {
-  const [users, setUser] = useState([]);
+  const [notes, setNotes] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
- 
-
-  const getUsers = async () => {
-    const response = await axios.get(`${BASE_URL}/note`);
-    setUser(response.data);
-  };
-
-  useEffect(() => {
-    getUsers();
-  }, []);
-
-  const deleteUser = async (id) => {
+  const getNotes = async () => {
     try {
-      await axios.delete(`${BASE_URL}/note/${id}`);
-      getUsers();
+      const response = await api.get("/note");
+      setNotes(response.data);
+      setLoading(false);
     } catch (error) {
-      console.log(error);
+      if (error.response && error.response.status === 401) {
+        logout();
+      }
+      console.error("Error fetching notes:", error);
+      setLoading(false);
     }
   };
 
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      navigate("/login");
+    } else {
+      getNotes();
+    }
+  }, [navigate]);
+
+  const deleteNote = async (id) => {
+    try {
+      await api.delete(`/note/${id}`);
+      getNotes();
+    } catch (error) {
+      console.error("Error deleting note:", error);
+      if (error.response && error.response.status === 401) {
+        logout();
+      }
+    }
+  };
+
+  const handleLogout = () => {
+    logout();
+  };
+
+  if (loading) {
+    return <div className="container mt-5">Loading...</div>;
+  }
+
   return (
     <div className="container mt-5">
-      
-      <div className="mb-4">
-        <Link to={`add`} className="button is-primary">
-          + Tambah Baru
-        </Link>
+      <div className="header-section">
+        <div className="mb-4">
+          <Link to="add" className="button is-primary">
+            + Tambah Baru
+          </Link>
+        </div>
+        <button onClick={handleLogout} className="button is-danger">
+          Logout
+        </button>
       </div>
 
-     
       <div className="card-container">
-        {users.map((user) => (
-          <div key={user.id} className="card">
-            <div className="card-header">
-            <div className="date-label">
+        {notes.length > 0 ? (
+          notes.map((note) => (
+            <div key={note.id} className="card">
+              <div className="card-header">
+                <div className="date-label">
                   <span>Last Edit :</span>
-                  <span>{new Date(user.updatedAt).toLocaleDateString("id-ID", {
-                    day: "2-digit",
-                    month: "long",
-                    year: "numeric",
-                    hour: "2-digit",
-                    minute: "2-digit"
-                  })}</span>
+                  <span>
+                    {new Date(note.updatedAt).toLocaleDateString("id-ID", {
+                      day: "2-digit",
+                      month: "long",
+                      year: "numeric",
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                  </span>
+                </div>
+                <span className="tag">{note.tag}</span>
+                <h3 className="title">{note.title}</h3>
+              </div>
+              <div className="card-content">{note.content}</div>
+              <div className="card-actions">
+                <Link to={`edit/${note.id}`} className="button is-small is-info">
+                  Edit
+                </Link>
+                <button
+                  onClick={() => deleteNote(note.id)}
+                  className="button is-small is-danger"
+                >
+                  Delete
+                </button>
+              </div>
             </div>
-
-              <span className="tag">{user.tag}</span>
-              <h3 className="title">{user.title}</h3>
-            </div>
-            <div className="card-content">{user.content}</div>
-            <div className="card-actions">
-              <Link to={`edit/${user.id}`} className="button is-small is-info">
-                Edit
-              </Link>
-              <button
-                onClick={() => deleteUser(user.id)}
-                className="button is-small is-danger"
-              >
-                Delete
-              </button>
-            </div>
-          </div>
-        ))}
+          ))
+        ) : (
+          <p>No notes found. Create your first note!</p>
+        )}
       </div>
     </div>
   );
