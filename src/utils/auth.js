@@ -1,8 +1,9 @@
 import axios from "axios";
+import { BASE_URL } from "./utils.js";
 
 export const logout = async () => {
   try {
-    await axios.delete("http://localhost:5000/users", {
+    await axios.delete(`${BASE_URL }/users`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
