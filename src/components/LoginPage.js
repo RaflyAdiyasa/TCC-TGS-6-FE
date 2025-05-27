@@ -23,7 +23,7 @@ const LoginPage = () => {
     
         // Simpan token ke localStorage
         localStorage.setItem("token", res.data.accessToken);
-        navigate("/"); // Arahkan ke halaman utama
+        navigate("/note"); // Arahkan ke halaman utama
       } catch (err) {
         setError("Login gagal. Cek email atau password.");
       }

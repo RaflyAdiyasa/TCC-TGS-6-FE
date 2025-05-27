@@ -31,7 +31,7 @@ const RegisterPage = () => {
         gender,
         password
       });
-      navigate("/login");
+      navigate("/");
     } catch (error) {
       console.error("Registration error:", error);
       setError(error.response?.data?.message || "Registrasi gagal");
@@ -107,7 +107,7 @@ const RegisterPage = () => {
         </button>
 
         <p className="auth-footer">
-          Sudah punya akun? <Link to="/login">Login</Link>
+          Sudah punya akun? <Link to="/">Login</Link>
         </p>
       </form>
     </div>

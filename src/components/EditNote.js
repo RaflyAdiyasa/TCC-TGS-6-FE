@@ -14,7 +14,7 @@ const EditNote = () => {
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) {
-      navigate("/login");
+      navigate("/");
     } else {
       getNoteById();
     }
@@ -44,7 +44,7 @@ const EditNote = () => {
         title,
         content,
       });
-      navigate("/");
+      navigate("/note");
     } catch (error) {
       console.error("Error updating note:", error);
       if (error.response && error.response.status === 401) {

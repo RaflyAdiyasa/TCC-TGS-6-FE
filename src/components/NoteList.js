@@ -26,7 +26,7 @@ const NoteList = () => {
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) {
-      navigate("/login");
+      navigate("/");
     } else {
       getNotes();
     }

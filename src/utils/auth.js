@@ -1,11 +1,14 @@
-// src/utils/auth.js
-import api from "./api";
+import axios from "axios";
 
 export const logout = async () => {
   try {
-    await api.delete("/users"); // Adjust this to match your logout endpoint
+    await axios.delete("http://localhost:5000/users", {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
     localStorage.removeItem("token");
-    window.location.href = "/login";
+    window.location.href = "/";
   } catch (error) {
     console.error("Logout failed:", error);
   }

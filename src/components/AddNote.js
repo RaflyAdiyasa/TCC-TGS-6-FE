@@ -12,7 +12,7 @@ const AddNote = () => {
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) {
-      navigate("/login");
+      navigate("/");
     }
   }, [navigate]);
 
@@ -24,7 +24,7 @@ const AddNote = () => {
         title,
         content,
       });
-      navigate("/");
+      navigate("/note");
     } catch (error) {
       console.error("Error creating note:", error);
       if (error.response && error.response.status === 401) {
