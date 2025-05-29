@@ -31,7 +31,7 @@ const RegisterPage = () => {
         gender,
         password
       });
-      // navigate("/");
+      navigate("/");
     } catch (error) {
       console.error("Registration error:", error);
       setError(error.response?.data?.message || "Registrasi gagal");
